@@ -3,3 +3,7 @@
 # SPDX-License-Identifier: 0BSD
 
 *~
+*.pyc
+/*.egg-info/
+/.vscode/settings.json
+/venv
