@@ -9,6 +9,8 @@ requires = [
   'setuptools_scm[toml]>=3.4',
 ]
 
+[tool.setuptools_scm]
+
 [tool.black]
 line-length = 88
 target-version = ['py37']
