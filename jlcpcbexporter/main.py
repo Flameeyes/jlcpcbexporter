@@ -35,7 +35,9 @@ def _split_by_widths(row, widths):
     columns = []
     cursor = 0
     for width in widths:
-        columns.append(row[cursor : cursor + width].rstrip())
+        start_slice = cursor
+        end_slice = cursor + width
+        columns.append(row[start_slice:end_slice].rstrip())
         cursor += width
     return columns
 
