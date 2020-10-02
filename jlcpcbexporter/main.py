@@ -6,6 +6,7 @@ import csv
 import pathlib
 import re
 import zipfile
+from typing import BinaryIO, Mapping, Sequence
 
 import click
 
@@ -20,7 +21,7 @@ _CPL_HEADERS = ["Designator", "Mid X ", "Mid Y", "Layer", "Rotation"]
 _BOM_HEADERS = ["Comment", "Designator", "Footprint", "LCSC Part #"]
 
 
-def _calculate_dynamic_fixed_widths(headers):
+def _calculate_dynamic_fixed_widths(headers: str) -> Sequence[int]:
     widths = []
     for header in re.split(r" ", headers):
         if header:
@@ -31,7 +32,7 @@ def _calculate_dynamic_fixed_widths(headers):
     return widths
 
 
-def _split_by_widths(row, widths):
+def _split_by_widths(row: str, widths: Sequence[int]) -> Sequence[str]:
     columns = []
     cursor = 0
     for width in widths:
@@ -42,7 +43,7 @@ def _split_by_widths(row, widths):
     return columns
 
 
-def _parse_eagle_parts_list(partslist):
+def _parse_eagle_parts_list(partslist: str) -> Sequence[Mapping[str, Sequence[str]]]:
     lines = re.split("\r?\n", partslist)
 
     headers = lines[2]
@@ -59,7 +60,7 @@ def _parse_eagle_parts_list(partslist):
 @click.command()
 @click.option("--layer", type=click.Choice(["top", "bottom"]), default="top")
 @click.argument("cam_zip_files", type=click.File("rb"), nargs=-1, required=True)
-def generate(*, layer, cam_zip_files):
+def generate(*, layer: str, cam_zip_files: Sequence[BinaryIO]) -> None:
     cam_layer = _JLC_LAYER_TO_CAM[layer]
 
     for cam_zip_file in cam_zip_files:
