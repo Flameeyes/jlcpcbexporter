@@ -82,6 +82,7 @@ def generate(*, layer: str, cam_zip_files: Sequence[BinaryIO]) -> None:
         eagle_parts = list(_parse_eagle_parts_list(assembly_content))
 
         bom_csv = csv.writer(output_bom_file, dialect="unix")
+        bom_csv.writerow(_BOM_HEADERS)
         for part in eagle_parts:
             if part["Value"]:
                 bom_csv.writerow([part["Value"], part["Parts"], part["Package"], ""])
