@@ -85,7 +85,14 @@ def generate(*, layer: str, cam_zip_files: Sequence[BinaryIO]) -> None:
         bom_csv.writerow(_BOM_HEADERS)
         for part in eagle_parts:
             if part["Value"]:
-                bom_csv.writerow([part["Value"], part["Parts"], part["Package"], ""])
+                bom_csv.writerow(
+                    [
+                        part["Value"],
+                        part["Parts"],
+                        part["Package"],
+                        part.get("JLCPCBPART#", ""),
+                    ]
+                )
 
         pnp_path = zip_path / f"PnP_{assembly_basename}_{cam_layer}.txt"
         assert pnp_path.exists()
